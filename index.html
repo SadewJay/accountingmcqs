@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Accounting 100 MCQ Master Quiz</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="h-full bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans transition-colors duration-200">
+
+    <div id="app" class="min-h-screen flex flex-col">
+        <!-- Top Navigation Bar -->
+        <header class="sticky top-0 z-30 bg-white/90 dark:bg-slate-800/90 backdrop-blur border-b border-slate-200 dark:border-slate-700 px-4 lg:px-8 py-3">
+            <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-brand-500/30">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold leading-tight">Financial Accounting MCQs</h1>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">100 Comprehensive Practice Questions</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-3">
+                    <!-- Timer (Visible in Test Mode) -->
+                    <div id="timerContainer" class="hidden items-center space-x-2 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-400 px-3 py-1.5 rounded-lg text-sm font-semibold">
+                        <i class="fa-solid fa-clock animate-pulse"></i>
+                        <span id="timerDisplay">60:00</span>
+                    </div>
+
+                    <!-- Theme Toggle -->
+                    <button id="themeToggleBtn" class="p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+                        <i id="themeIcon" class="fa-solid fa-moon"></i>
+                    </button>
+
+                    <!-- Reset Quiz -->
+                    <button id="resetBtn" class="px-3 py-2 text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-400 transition">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Reset
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+            <!-- Sidebar Controls & Stats -->
+            <aside class="lg:col-span-1 space-y-6">
+                
+                <!-- Mode Toggle Widget -->
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Study Mode</h3>
+                    <div class="grid grid-cols-2 gap-2 p-1 bg-slate-100 dark:bg-slate-900 rounded-lg">
+                        <button id="modePractice" class="py-2 text-xs font-semibold rounded-md transition shadow bg-white dark:bg-slate-800 text-brand-600 dark:text-brand-400">
+                            Practice Mode
+                        </button>
+                        <button id="modeTest" class="py-2 text-xs font-semibold rounded-md transition text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100">
+                            Timed Test
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Section Filters -->
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Filter Sections</h3>
+                        <span id="filteredCount" class="text-xs font-medium text-brand-600 dark:text-brand-400">100 Questions</span>
+                    </div>
+
+                    <div class="space-y-1.5 text-xs font-medium">
+                        <button data-section="all" class="sec-filter w-full text-left px-3 py-2 rounded-lg bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 font-semibold transition">
+                            All Sections (Q1 - Q100)
+                        </button>
+                        <button data-section="1" class="sec-filter w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition">
+                            Sec 1: Introduction & Functions (Q1-20)
+                        </button>
+                        <button data-section="2" class="sec-filter w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition">
+                            Sec 2: GAAP & Concepts (Q21-50)
+                        </button>
+                        <button data-section="3" class="sec-filter w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition">
+                            Sec 3: Source Docs & Prime Books (Q51-75)
+                        </button>
+                        <button data-section="4" class="sec-filter w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition">
+                            Sec 4: Ledgers & Control A/Cs (Q76-100)
+                        </button>
+                        <button data-section="bookmarked" class="sec-filter w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-amber-600 dark:text-amber-400 transition flex items-center justify-between">
+                            <span><i class="fa-solid fa-star mr-1.5"></i> Bookmarked Questions</span>
+                            <span id="bookmarkBadge" class="bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300 text-[10px] px-2 py-0.5 rounded-full">0</span>
+                        </button>
+                    </div>
+
+                    <!-- Search Box -->
+                    <div class="relative pt-2">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-5 text-slate-400 text-xs"></i>
+                        <input id="searchInput" type="text" placeholder="Search keywords..." class="w-full pl-8 pr-3 py-2 text-xs bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500">
+                    </div>
+                </div>
+
+                <!-- Stats Dashboard -->
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Score & Progress</h3>
+                    
+                    <div class="grid grid-cols-2 gap-3 text-center">
+                        <div class="p-3 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-100 dark:border-slate-800">
+                            <span id="scoreText" class="block text-2xl font-bold text-brand-600 dark:text-brand-400">0</span>
+                            <span class="text-[10px] text-slate-400 uppercase font-semibold">Correct Answers</span>
+                        </div>
+                        <div class="p-3 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-100 dark:border-slate-800">
+                            <span id="accuracyText" class="block text-2xl font-bold text-emerald-600 dark:text-emerald-400">0%</span>
+                            <span class="text-[10px] text-slate-400 uppercase font-semibold">Accuracy</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs font-medium text-slate-500 mb-1">
+                            <span>Answered Progress</span>
+                            <span id="progressPercent">0%</span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                            <div id="progressBar" class="h-full bg-brand-500 transition-all duration-300 w-0"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question Grid Navigation Navigator -->
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Quick Question Grid</h3>
+                    <div id="questionGrid" class="grid grid-cols-5 gap-1.5 max-h-48 overflow-y-auto custom-scrollbar p-1">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+
+            </aside>
+
+            <!-- Quiz Display Main Container -->
+            <section class="lg:col-span-3 space-y-6">
+
+                <!-- Question Card -->
+                <div id="questionCard" class="bg-white dark:bg-slate-800 p-6 lg:p-8 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm relative transition-all">
+                    
+                    <!-- Question Top Bar -->
+                    <div class="flex items-center justify-between gap-4 mb-4 pb-4 border-b border-slate-100 dark:border-slate-700/60">
+                        <span id="qSectionTag" class="px-3 py-1 text-xs font-semibold rounded-full bg-brand-50 dark:bg-brand-900/40 text-brand-600 dark:text-brand-300">
+                            Section 1
+                        </span>
+                        <div class="flex items-center space-x-3">
+                            <span id="qNumberTag" class="text-xs font-bold text-slate-400">Question 1 of 100</span>
+                            <button id="bookmarkBtn" class="text-slate-400 hover:text-amber-500 transition text-lg">
+                                <i class="fa-regular fa-star"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Question Text -->
+                    <h2 id="questionText" class="text-base sm:text-lg font-semibold text-slate-900 dark:text-white leading-relaxed mb-6">
+                        Loading Question...
+                    </h2>
+
+                    <!-- Options Container -->
+                    <div id="optionsContainer" class="space-y-3 mb-6">
+                        <!-- Options populated via JS -->
+                    </div>
+
+                    <!-- Explanation Box (Shown in practice mode after answering) -->
+                    <div id="explanationBox" class="hidden p-4 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700 mb-6 text-sm">
+                        <div class="flex items-center space-x-2 font-bold text-brand-600 dark:text-brand-400 mb-1">
+                            <i class="fa-solid fa-lightbulb"></i>
+                            <span>Explanation & Concept</span>
+                        </div>
+                        <p id="explanationText" class="text-slate-600 dark:text-slate-300 leading-relaxed">
+                            Explanation goes here...
+                        </p>
+                    </div>
+
+                    <!-- Card Footer Actions -->
+                    <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-100 dark:border-slate-700/60">
+                        <button id="prevBtn" class="px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 transition disabled:opacity-40">
+                            <i class="fa-solid fa-arrow-left mr-1.5"></i> Previous
+                        </button>
+
+                        <div class="flex items-center space-x-2">
+                            <button id="submitTestBtn" class="hidden px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition shadow">
+                                Submit Test
+                            </button>
+                            <button id="nextBtn" class="px-5 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-brand-600 text-white hover:bg-brand-700 transition shadow shadow-brand-500/20">
+                                Next <i class="fa-solid fa-arrow-right ml-1.5"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Test Final Summary View (Hidden by Default) -->
+                <div id="testSummaryCard" class="hidden bg-white dark:bg-slate-800 p-8 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm text-center space-y-6">
+                    <div class="w-20 h-20 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center text-3xl mx-auto">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Test Completed!</h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Here is your overall performance report</p>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-4 max-w-md mx-auto">
+                        <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-xl">
+                            <span id="finalScore" class="block text-3xl font-extrabold text-brand-600 dark:text-brand-400">0/100</span>
+                            <span class="text-xs text-slate-400 font-semibold">Total Score</span>
+                        </div>
+                        <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-xl">
+                            <span id="finalAccuracy" class="block text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">0%</span>
+                            <span class="text-xs text-slate-400 font-semibold">Accuracy</span>
+                        </div>
+                        <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-xl">
+                            <span id="finalTime" class="block text-3xl font-extrabold text-amber-600 dark:text-amber-400">00:00</span>
+                            <span class="text-xs text-slate-400 font-semibold">Time Spent</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 flex justify-center space-x-4">
+                        <button id="reviewTestBtn" class="px-6 py-2.5 text-sm font-semibold rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 transition">
+                            Review All Answers
+                        </button>
+                        <button id="retakeTestBtn" class="px-6 py-2.5 text-sm font-semibold rounded-xl bg-brand-600 text-white hover:bg-brand-700 transition shadow">
+                            Retake Test
+                        </button>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <!-- Application Script with Questions & Logic -->
+    <script>
+        // 100 MCQ DATASTORE
+        const questionsData = [
+            // Section 1
+            { id: 1, section: 1, text: "What is the scope of Financial Accounting?", options: ["(a) It is the systematic process of recording, measuring, and communicating financial information to external stakeholders only.", "(b) It is the systematic process of recording, measuring, and communicating financial information to internal and external stakeholders.", "(c) It is the systematic process of recording, measuring, and communicating non-financial information to internal managers only.", "(d) It is the systematic process of allocating product costs to different departments.", "(e) It is the process of setting selling prices based on competitor actions."], answer: 1, exp: "Financial accounting deals with systematically recording, measuring, and communicating economic information to both internal and external stakeholders." },
+            { id: 2, section: 1, text: "Which of the following is NOT a primary function of Financial Accounting?", options: ["(a) Recording business transactions using source documents.", "(b) Classifying transactions into ledger accounts.", "(c) Summarizing transactions into financial statements.", "(d) Conducting product cost estimation for factory pricing decisions.", "(e) Analyzing and interpreting financial statements using ratio analysis."], answer: 3, exp: "Product cost estimation for factory pricing decisions is a function of Cost & Management Accounting, not Financial Accounting." },
+            { id: 3, section: 1, text: "Entering cash sales into the Cash Receipts Journal is an example of which accounting function?", options: ["(a) Classifying", "(b) Summarizing", "(c) Recording", "(d) Interpreting", "(e) Budgeting"], answer: 2, exp: "Recording means entering business transactions evidenced by source documents into books of prime entry." },
+            { id: 4, section: 1, text: "Posting an expense item from a day book into a nominal ledger account illustrates which accounting function?", options: ["(a) Recording", "(b) Classifying", "(c) Summarizing", "(d) Auditing", "(e) Disclosure"], answer: 1, exp: "Classifying involves grouping recorded transactions into related ledger accounts in a compact form." },
+            { id: 5, section: 1, text: "Preparing a Trial Balance, Statement of Profit or Loss, and Statement of Financial Position represents:", options: ["(a) Recording", "(b) Classifying", "(c) Summarizing", "(d) Source documentation", "(e) Materiality assessment"], answer: 2, exp: "Summarizing involves balancing ledgers and aggregating financial information into structured financial reports." },
+            { id: 6, section: 1, text: "Which of the following is considered an 'Analyzing and Interpreting' function in accounting?", options: ["(a) Balancing off the Cash Book at the end of the month.", "(b) Performing ratio analysis and cash flow trend analysis.", "(c) Issuing a credit note to a customer for damaged goods.", "(d) Writing off bad debts in the trade debtors ledger.", "(e) Recording petty cash payments under the imprest system."], answer: 1, exp: "Analyzing and interpreting involves evaluating financial performance and position using tools like ratio and cash flow analysis." },
+            { id: 7, section: 1, text: "Which of the following is an internal user of accounting information?", options: ["(a) Prospective Shareholders", "(b) Commercial Banks", "(c) Tax Authorities (IRDs)", "(d) Production Managers", "(e) Trade Creditors"], answer: 3, exp: "Production managers are internal personnel who use accounting information to plan and control business operations." },
+            { id: 8, section: 1, text: "Trade Creditors and Financial Institutions mainly use financial statements to:", options: ["(a) Calculate employee annual performance bonuses.", "(b) Determine whether to extend loans, credit facilities, and assess firm stability/solvency.", "(c) Assess compliance with environmental regulations.", "(d) Evaluate the internal cost structure of products.", "(e) Fix government tax rates."], answer: 1, exp: "Creditors and financial institutions review accounting reports to gauge stability, solvency, and creditworthiness before offering credit/loans." },
+            { id: 9, section: 1, text: "What is the primary purpose of Cost Accounting?", options: ["(a) To report general financial performance to external shareholders.", "(b) To ascertain the cost of goods/services produced and allocate costs to cost units/departments.", "(c) To prepare statutory annual reports for the Registrar of Companies.", "(d) To calculate income tax payable to the government.", "(e) To record double-entry transactions in the general journal."], answer: 1, exp: "Cost accounting focuses on ascertaining production costs and allocating expenses to products, services, or departments." },
+            { id: 10, section: 1, text: "Management Accounting is best defined as:", options: ["(a) The process of maintaining physical source documents for tax audits.", "(b) The application of accounting information for planning, organizing, and controlling entity resources.", "(c) The strict adherence to historical cost recording for fixed assets.", "(d) The statutory publication of annual financial reports for public scrutiny.", "(e) The preparation of bank reconciliation statements."], answer: 1, exp: "Management accounting applies financial and cost accounting data for decision-making, resource planning, and control." },
+            { id: 11, section: 1, text: "Which division of accounting draws information from both Financial and Cost accounting systems to assist internal decision-makers?", options: ["(a) Forensic Accounting", "(b) Tax Accounting", "(c) Management Accounting", "(d) External Auditing", "(e) Environmental Accounting"], answer: 2, exp: "Management accounting draws data from both financial and cost systems to generate internal reports." },
+            { id: 12, section: 1, text: "Which of the following user groups requires published accounts to assess dividend capacity and management stewardship?", options: ["(a) Trade Unions", "(b) Owners / Shareholders", "(c) Factory Supervisors", "(d) General Creditors", "(e) Local Municipal Councils"], answer: 1, exp: "Shareholders require audited reports to assess managerial performance (stewardship) and expected dividend returns." },
+            { id: 13, section: 1, text: "A core objective of maintaining business accounting records is to:", options: ["(a) Eliminate all operational risks.", "(b) Guarantee profit in every trading period.", "(c) Ascertain operating results (Profit/Loss) and depict financial position.", "(d) Automatically prevent employee turnover.", "(e) Avoid paying municipal taxes."], answer: 2, exp: "Main accounting objectives include ascertaining profit/loss, displaying financial position, controlling assets, and keeping structured records." },
+            { id: 14, section: 1, text: "Accounting deals with the measurement of economic activities affecting:", options: ["(a) Political affiliations of the board of directors.", "(b) Inflows and outflows of economic resources to facilitate decision-making.", "(c) Subjective customer satisfaction ratings.", "(d) Qualitative employee morale indicators.", "(e) Unquantifiable market rumors."], answer: 1, exp: "Accounting measures economic inflows and outflows of resources to develop reliable information for decision makers." },
+            { id: 15, section: 1, text: "Financial Accounting information is communicated to external users primarily through:", options: ["(a) Internal memo notes and daily logs.", "(b) General Ledgers and Day Books.", "(c) General Purpose Financial Statements (P&L, Balance Sheet, Cash Flows, Notes).", "(d) Factory job cost sheets.", "(e) Bank pay-in slips."], answer: 2, exp: "Financial statements (Income Statement, Statement of Financial Position, Cash Flows) are the official communication medium for external users." },
+            { id: 16, section: 1, text: "Which user group utilizes financial statements to assess the security of employment and wage negotiation capacity?", options: ["(a) Financial Analysts", "(b) Trade Creditors", "(c) Employees and Trade Unions", "(d) Tax Officers", "(e) Competitors"], answer: 2, exp: "Employees and trade unions check company profitability to negotiate wages and ensure job stability." },
+            { id: 17, section: 1, text: "What distinguishes Financial Accounting from Management Accounting?", options: ["(a) Financial Accounting is future-focused; Management Accounting is historical.", "(b) Financial Accounting is governed by GAAP/LKAS; Management Accounting is for internal use without strict legal formats.", "(c) Financial Accounting is for factory supervisors; Management Accounting is for bank managers.", "(d) Financial Accounting does not use monetary terms; Management Accounting does.", "(e) Financial Accounting is optional for public companies; Management Accounting is mandatory."], answer: 1, exp: "Financial Accounting follows standard frameworks (GAAP) for external reporting, while Management Accounting is flexible for internal management." },
+            { id: 18, section: 1, text: "Which accounting function involves expressing business transactions in monetary terms in prime entry books?", options: ["(a) Summarizing", "(b) Recording", "(c) Interpreting", "(d) Ratio calculation", "(e) Variance analysis"], answer: 1, exp: "Recording involves entering monetary transactions backed by source documents into primary records." },
+            { id: 19, section: 1, text: "Which of the following is an objective of accounting?", options: ["(a) Controlling the property and assets of the entity.", "(b) Portraying the liquidity position of the business.", "(c) Providing information for filing tax returns.", "(d) Ascertaining profit or loss.", "(e) All of the above."], answer: 4, exp: "Maintaining asset control, portraying liquidity, tax filing support, and determining profit/loss are all core accounting objectives." },
+            { id: 20, section: 1, text: "Systematic balancing of ledger accounts and extracting a Trial Balance is part of:", options: ["(a) Summarizing", "(b) Source document verification", "(c) Auditing", "(d) Qualitative analysis", "(e) Narrative disclosure"], answer: 0, exp: "Balancing ledger accounts and listing them on a Trial Balance is part of the Summarizing function." },
+
+            // Section 2
+            { id: 21, section: 2, text: "What does the acronym GAAP stand for?", options: ["(a) Generally Accepted Accounting Provisions", "(b) Generally Accepted Accounting Policies", "(c) Generally Accepted Accounting Practices", "(d) Generally Accepted Accounting Principles", "(e) General American Accounting Practices"], answer: 3, exp: "GAAP stands for Generally Accepted Accounting Principles." },
+            { id: 22, section: 2, text: "Which fundamental accounting concept assumes that a business entity will continue operating in the foreseeable future without the intention or necessity of liquidation?", options: ["(a) Business Entity Concept", "(b) Going Concern Concept", "(c) Materiality Concept", "(d) Money Measurement Concept", "(e) Realization Concept"], answer: 1, exp: "Going concern assumes the enterprise will continue operating indefinitely without curtailing operations significantly." },
+            { id: 23, section: 2, text: "According to the Business Entity Concept:", options: ["(a) Transactions of the owner and the business are merged into one single bank account.", "(b) The business is treated as an entity separate and distinct from its owners and creditors.", "(c) Assets are always recorded at their current market value.", "(d) Profits are recognized only when cash is deposited into the bank.", "(e) Personal expenses of the proprietor are treated as operating expenses of the firm."], answer: 1, exp: "The business entity concept views the business as a unit distinct and separate from its owner." },
+            { id: 24, section: 2, text: "The Money Measurement Concept implies that:", options: ["(a) All business assets must be converted to cash at the end of every month.", "(b) Only transactions and events capable of being expressed in monetary terms are recorded in the accounting records.", "(c) Inflation is automatically adjusted in all ledger balances.", "(d) Qualitative factors like employee efficiency are recorded in the general ledger.", "(e) Financial statements are fully accurate during hyperinflation."], answer: 1, exp: "Accounting records are restricted to items that can be quantified in monetary units, leaving out unquantifiable qualitative factors." },
+            { id: 25, section: 2, text: "A business purchases a stapler for Rs. 350 and expenses it immediately rather than capitalizing it as a non-current asset. Which concept justifies this treatment?", options: ["(a) Going Concern Concept", "(b) Materiality Concept", "(c) Historical Cost Concept", "(d) Business Entity Concept", "(e) Objectivity Concept"], answer: 1, exp: "Materiality states that trivial items need not be recorded in elaborate detail if the cost/effort outweighs usefulness." },
+            { id: 26, section: 2, text: "The Prudence (Conservatism) Concept requires that:", options: ["(a) Revenues and assets are overstated to boost investor confidence.", "(b) Expenses and liabilities are ignored until paid in cash.", "(c) Potential losses and liabilities are provided for immediately, while profits are recognized only when realized.", "(d) Accounting policies are changed every year to show maximum profits.", "(e) Fixed assets are recorded at replacement value."], answer: 2, exp: "Prudence dictates making provisions for all known liabilities/losses while not anticipating revenue until realized." },
+            { id: 27, section: 2, text: "Recording revenue when goods are delivered and risk/title passes to the customer, rather than when the order is placed or cash is received, adheres to the:", options: ["(a) Cash Concept", "(b) Realization / Revenue Recognition Concept", "(c) Periodicity Concept", "(d) Full Disclosure Concept", "(e) Cost Concept"], answer: 1, exp: "The realization concept holds that revenue/profit is recognized when earned/delivered, not upon contract award or order placement." },
+            { id: 28, section: 2, text: "The Matching Principle dictates that:", options: ["(a) Cash received must match cash paid in each accounting period.", "(b) Expenses incurred to earn revenue must be recognized in the same accounting period as the corresponding revenue.", "(c) Total debit balances must equal total credit balances in the Trial Balance.", "(d) Purchases must match sales in quantity every month.", "(e) Assets must equal liabilities plus bank overdraft."], answer: 1, exp: "Matching requires expenses incurred in generating specific revenues to be matched in the same accounting period." },
+            { id: 29, section: 2, text: "What is the main drawback of the Historical Cost Concept?", options: ["(a) It is highly subjective and depends on manager opinion.", "(b) It does not provide verifiable documentary evidence.", "(c) It fails to reflect the current market values or impact of inflation on non-current assets over time.", "(d) It is prohibited under GAAP.", "(e) It violates the double-entry bookkeeping system."], answer: 2, exp: "Historical cost provides objective proof but fails to show current market values or inflation impact." },
+            { id: 30, section: 2, text: "Which accounting concept states that once an accounting method (e.g., straight-line depreciation) is adopted, it should be consistently applied in subsequent periods?", options: ["(a) Accrual Concept", "(b) Consistency Concept", "(c) Substance Over Form", "(d) Objectivity Concept", "(e) Periodic Concept"], answer: 1, exp: "Consistency requires sticking to chosen accounting policies over time to ensure comparability across periods." },
+            { id: 31, section: 2, text: "Presenting transactions according to their economic reality rather than their strict legal structure (e.g., accounting for a Hire Purchase asset as owned) is known as:", options: ["(a) Materiality", "(b) Substance Over Form", "(c) Conservatism", "(d) Money Measurement", "(e) Periodicity"], answer: 1, exp: "Substance over form dictates accounting for the economic reality of events rather than merely legal ownership." },
+            { id: 32, section: 2, text: "The requirement that accounting records must be supported by objective evidence such as invoices, receipts, and vouchers is the core of the:", options: ["(a) Subjectivity Concept", "(b) Objectivity Concept", "(c) Disclosure Concept", "(d) Entity Concept", "(e) Matching Concept"], answer: 1, exp: "Objectivity requires entries to be verifiable through factual source documents rather than personal bias." },
+            { id: 33, section: 2, text: "The Accrual Concept requires that:", options: ["(a) Revenues and expenses are recognized as they are earned or incurred, regardless of when cash is received or paid.", "(b) Transactions are recorded only when cash changes hands.", "(c) Expenses are recorded in the year following cash payment.", "(d) Profit is equal to total cash inflows minus total cash outflows.", "(e) Accrued expenses are ignored at the end of the financial year."], answer: 0, exp: "Accrual requires recognizing income and expenses as earned/incurred irrespective of cash timing." },
+            { id: 34, section: 2, text: "The fundamental Accounting Equation is formulated as:", options: ["(a) Total Assets = Owner's Equity – Total External Liabilities", "(b) Total Assets = Owner's Equity + Total External Liabilities", "(c) Owner's Equity = Total Assets + Total External Liabilities", "(d) Current Assets = Non-Current Assets + Capital", "(e) Net Assets = Owner's Equity + Working Capital"], answer: 1, exp: "Basic accounting equation: Total Assets = Owner's Equity + Total External Liabilities." },
+            { id: 35, section: 2, text: "Working Capital is defined as:", options: ["(a) Total Assets – Total Liabilities", "(b) Non-Current Assets – Current Liabilities", "(c) Current Assets – Current Liabilities", "(d) Owner's Equity + Long Term Loans", "(e) Cash in Hand + Cash at Bank"], answer: 2, exp: "Working Capital = Current Assets minus Current Liabilities." },
+            { id: 36, section: 2, text: "Net Assets of an entity are equal to:", options: ["(a) Non-Current Assets + Current Assets", "(b) Total Assets – Total External Liabilities (which equals Owner's Equity)", "(c) Total Liabilities – Current Assets", "(d) Gross Profit – Operating Expenses", "(e) Capital + Drawings"], answer: 1, exp: "Net Assets = Total Assets - External Liabilities, which equals Owner's Equity." },
+            { id: 37, section: 2, text: "Which of the following represents a correct expansion of the Accounting Equation?", options: ["(a) Non-Current Assets + Current Assets = Owner's Equity + Long-Term Liabilities + Current Liabilities", "(b) Owner's Equity = Non-Current Assets – Current Assets + External Liabilities", "(c) Total Assets + Current Liabilities = Owner's Equity + Long-Term Liabilities", "(d) Working Capital = Total Assets – Total Liabilities", "(e) Current Assets = Owner's Equity – Non-Current Assets"], answer: 0, exp: "Expanded Equation: NCA + CA = Equity + LTL + CL." },
+            { id: 38, section: 2, text: "If Total Assets of a business are Rs. 1,200,000 and External Liabilities are Rs. 450,000, what is the Owner's Equity?", options: ["(a) Rs. 1,650,000", "(b) Rs. 750,000", "(c) Rs. 450,000", "(d) Rs. 1,200,000", "(e) Rs. 850,000"], answer: 1, exp: "Equity = Total Assets (1,200,000) - External Liabilities (450,000) = Rs. 750,000." },
+            { id: 39, section: 2, text: "A sole proprietor introduces an additional capital of Rs. 100,000 in cash into the business bank account. What is the effect on the accounting equation?", options: ["(a) Increase Non-Current Assets by Rs. 100,000; Increase Liabilities by Rs. 100,000", "(b) Increase Current Assets by Rs. 100,000; Increase Owner's Equity by Rs. 100,000", "(c) Decrease Current Assets by Rs. 100,000; Increase Owner's Equity by Rs. 100,000", "(d) Increase Current Assets by Rs. 100,000; Decrease Liabilities by Rs. 100,000", "(e) No net change in Total Assets or Owner's Equity."], answer: 1, exp: "Cash/Bank (Current Asset) increases by 100,000 and Owner's Equity increases by 100,000." },
+            { id: 40, section: 2, text: "Goods costing Rs. 40,000 are sold on credit for Rs. 55,000. What is the net effect on the accounting equation?", options: ["(a) Stock decreases by Rs. 40,000, Debtors increase by Rs. 55,000, Equity increases by Rs. 15,000.", "(b) Stock increases by Rs. 40,000, Debtors decrease by Rs. 55,000, Equity decreases by Rs. 15,000.", "(c) Cash increases by Rs. 55,000, Stock decreases by Rs. 40,000, Equity decreases by Rs. 15,000.", "(d) Debtors increase by Rs. 55,000, Creditors increase by Rs. 40,000, Equity increases by Rs. 15,000.", "(e) Stock decreases by Rs. 55,000, Equity increases by Rs. 55,000."], answer: 0, exp: "Stock (-40,000), Debtors (+55,000) -> Net Asset increase of +15,000 matches Equity gain of +15,000 (Profit)." },
+            { id: 41, section: 2, text: "Payment of a credit supplier (Trade Creditor) of Rs. 25,000 by cheque results in:", options: ["(a) Decrease in Current Assets (Bank) by Rs. 25,000; Decrease in Current Liabilities (Creditors) by Rs. 25,000.", "(b) Increase in Current Assets by Rs. 25,000; Decrease in Current Liabilities by Rs. 25,000.", "(c) Decrease in Current Assets by Rs. 25,000; Decrease in Owner's Equity by Rs. 25,000.", "(d) Increase in Current Liabilities by Rs. 25,000; Decrease in Owner's Equity by Rs. 25,000.", "(e) No change in Current Assets or Current Liabilities."], answer: 0, exp: "Bank (Asset) decreases by 25,000 and Creditors (Liability) decreases by 25,000." },
+            { id: 42, section: 2, text: "Purchasing delivery equipment for Rs. 150,000 by paying Rs. 50,000 in cash and promising to pay the balance in 60 days will:", options: ["(a) Increase Non-Current Assets by Rs. 150,000, Decrease Cash by Rs. 50,000, Increase Liabilities by Rs. 100,000.", "(b) Increase Non-Current Assets by Rs. 100,000, Increase Liabilities by Rs. 100,000.", "(c) Decrease Cash by Rs. 50,000, Decrease Equity by Rs. 50,000.", "(d) Increase Non-Current Assets by Rs. 150,000, Decrease Equity by Rs. 150,000.", "(e) Increase Current Assets by Rs. 100,000, Increase Current Liabilities by Rs. 100,000."], answer: 0, exp: "NCA increases +150k, Cash decreases -50k (Net Asset +100k) = Creditors/Liabilities increases +100k." },
+            { id: 43, section: 2, text: "A firm has Current Assets of Rs. 350,000 and Current Liabilities of Rs. 120,000. What is its Working Capital?", options: ["(a) Rs. 470,000", "(b) Rs. 230,000", "(c) Rs. 350,000", "(d) Rs. 120,000", "(e) Rs. 250,000"], answer: 1, exp: "Working Capital = 350,000 - 120,000 = Rs. 230,000." },
+            { id: 44, section: 2, text: "The Periodicity Concept specifies that:", options: ["(a) Accounting records must be kept for a minimum of 100 years.", "(b) Financial performance and position must be measured over specific, regular time intervals (e.g., 12 months).", "(c) Depreciation must be charged every day.", "(d) Sales revenue can only be measured once every five years.", "(e) Cash flows are reported only upon business termination."], answer: 1, exp: "Periodicity specifies reporting results across defined regular periods like financial years." },
+            { id: 45, section: 2, text: "Which principle requires full, fair, and adequate disclosure of all material financial information in financial reports and notes?", options: ["(a) Entity Principle", "(b) Full Disclosure Principle", "(c) Cost Principle", "(d) Prudence Principle", "(e) Realization Principle"], answer: 1, exp: "Disclosure concept mandates revealing all significant material facts in notes/reports." },
+            { id: 46, section: 2, text: "Writing down inventory to its Net Realizable Value (NRV) when NRV is lower than cost is an application of:", options: ["(a) Matching Concept", "(b) Prudence / Conservatism Concept", "(c) Historical Cost Concept", "(d) Entity Concept", "(e) Money Measurement Concept"], answer: 1, exp: "Valuing inventory at lower of cost or NRV prevents asset/profit overstatement, following prudence." },
+            { id: 47, section: 2, text: "Owner's Equity is reduced by:", options: ["(a) Additional capital introduced", "(b) Net profit earned during the year", "(c) Personal drawings by the owner", "(d) Collection of cash from trade debtors", "(e) Receipt of a bank loan"], answer: 2, exp: "Drawings represent withdrawal of resources by the owner, reducing equity." },
+            { id: 48, section: 2, text: "Why are skills, morale, and dedication of employees NOT reflected in the Statement of Financial Position?", options: ["(a) Because of the Materiality Concept", "(b) Because of the Money Measurement Concept", "(c) Because of the Going Concern Concept", "(d) Because of the Accrual Concept", "(e) Because of the Consistency Concept"], answer: 1, exp: "Employee skills/morale cannot be objectively quantified in monetary terms." },
+            { id: 49, section: 2, text: "If a business buys goods on credit for Rs. 60,000, the effect on the accounting equation is:", options: ["(a) Current Assets (Stock) increase by Rs. 60,000; Current Liabilities (Creditors) increase by Rs. 60,000.", "(b) Current Assets increase by Rs. 60,000; Owner's Equity increases by Rs. 60,000.", "(c) Non-Current Assets increase by Rs. 60,000; Current Liabilities increase by Rs. 60,000.", "(d) Current Assets decrease by Rs. 60,000; Current Liabilities decrease by Rs. 60,000.", "(e) No change in total assets."], answer: 0, exp: "Stock (Current Asset) increases by 60k and Creditors (Current Liability) increases by 60k." },
+            { id: 50, section: 2, text: "An equipment carrying a book value of Rs. 80,000 is sold for Rs. 65,000 cash. What is the impact on Owner's Equity?", options: ["(a) Increases by Rs. 65,000", "(b) Decreases by Rs. 15,000 (Loss on disposal)", "(c) Increases by Rs. 15,000", "(d) Decreases by Rs. 80,000", "(e) No impact on Owner's Equity"], answer: 1, exp: "Selling an 80k asset for 65k results in a 15k loss on disposal, reducing profit and owner's equity." },
+
+            // Section 3
+            { id: 51, section: 3, text: "Which of the following is the primary source document used to record credit purchases in the Purchase Day Book?", options: ["(a) Sales Invoice", "(b) Purchase Invoice", "(c) Debit Note", "(d) Credit Note", "(e) Payment Voucher"], answer: 1, exp: "Purchase Invoice received from suppliers is the source document for Purchase Day Book." },
+            { id: 52, section: 3, text: "When goods sold on credit are returned by a customer, which source document is issued by the seller to the customer?", options: ["(a) Debit Note", "(b) Purchase Invoice", "(c) Credit Note", "(d) Receipt", "(e) Cheque counterfoil"], answer: 2, exp: "The seller issues a Credit Note to confirm customer's account has been credited for returned goods." },
+            { id: 53, section: 3, text: "What source document is issued by a buyer to a seller when returning damaged goods purchased on credit?", options: ["(a) Credit Note", "(b) Debit Note", "(c) Payment Voucher", "(d) Sales Invoice", "(e) Bank Statement"], answer: 1, exp: "The buyer sends a Debit Note informing the supplier that their account is being debited for returned items." },
+            { id: 54, section: 3, text: "In which book of prime entry are credit purchases of raw materials or trading stock recorded?", options: ["(a) General Journal", "(b) Cash Payments Journal", "(c) Purchase Day Book", "(d) Purchase Return Day Book", "(e) Sales Day Book"], answer: 2, exp: "Credit purchases of trading stock are recorded in the Purchase Day Book." },
+            { id: 55, section: 3, text: "Where should a credit purchase of a Non-Current Asset (e.g., Office Machinery on credit) be recorded?", options: ["(a) Purchase Day Book", "(b) Cash Payments Journal", "(c) General Journal", "(d) Petty Cash Book", "(e) Sales Day Book"], answer: 2, exp: "Credit purchases of fixed assets are non-routine and go into the General Journal, not the Purchase Day Book." },
+            { id: 56, section: 3, text: "Credit sales of merchandise are initially recorded in the:", options: ["(a) Cash Receipts Journal", "(b) Sales Day Book", "(c) Sales Ledger", "(d) General Journal", "(e) Debtors Control Account"], answer: 1, exp: "Credit sales of goods are entered first in the Sales Day Book." },
+            { id: 57, section: 3, text: "What is the source document for making payments out of the Petty Cash float?", options: ["(a) Invoice", "(b) Petty Cash Voucher", "(c) Credit Note", "(d) Debit Note", "(e) Bank pay-in slip"], answer: 1, exp: "Petty Cash Vouchers document small routine expenditures made from petty cash." },
+            { id: 58, section: 3, text: "Under the Imprest System of petty cash, the 'Imprest Amount' or 'Float' represents:", options: ["(a) The total amount spent during the month.", "(b) An agreed fixed sum of money maintained in petty cash at the start of each period.", "(c) The bank overdraft limit.", "(d) The net profit generated from small cash sales.", "(e) The total discount allowed to petty customers."], answer: 1, exp: "Imprest float is the agreed constant cash balance topped up periodically." },
+            { id: 59, section: 3, text: "If the imprest float is Rs. 20,000 and the petty cashier spent Rs. 16,400 during January, how much cash will be reimbursed at the beginning of February to restore the float?", options: ["(a) Rs. 20,000", "(b) Rs. 3,600", "(c) Rs. 16,400", "(d) Rs. 36,400", "(e) Rs. 10,000"], answer: 2, exp: "Reimbursement equals actual expenditure (16,400) to restore the total back to 20,000." },
+            { id: 60, section: 3, text: "The Purchase Return Day Book is used to record:", options: ["(a) Returns of goods originally sold on credit to customers.", "(b) Returns of goods originally purchased on credit from suppliers.", "(c) Cash refunds given to retail cash customers.", "(d) Return of damaged fixed assets purchased for cash.", "(e) Allowance for doubtful debts."], answer: 1, exp: "Purchase Return Day Book tracks returned goods bought on credit from suppliers." },
+            { id: 61, section: 3, text: "Which prime entry book is used to record non-routine transactions such as opening entries, correction of errors, and write-off of bad debts?", options: ["(a) Cash Control Account", "(b) General Journal", "(c) Sales Day Book", "(d) Bills Receivable Day Book", "(e) Purchase Day Book"], answer: 1, exp: "General Journal records non-routine transactions, adjustments, and error rectifications." },
+            { id: 62, section: 3, text: "Periodic total of the Sales Day Book is posted to:", options: ["(a) Debit of Sales Account in the General Ledger", "(b) Credit of Sales Account in the General Ledger", "(c) Debit of Trade Creditors Control Account", "(d) Credit of Debtors Control Account", "(e) Credit of Cash Account"], answer: 1, exp: "Sales Day Book periodic total is credited to the Sales Account in the General Ledger." },
+            { id: 63, section: 3, text: "Periodic total of the Purchase Day Book is posted to:", options: ["(a) Debit of Purchase Account in the General Ledger", "(b) Credit of Purchase Account in the General Ledger", "(c) Credit of Cash Book", "(d) Debit of Trade Creditors Control Account", "(e) Debit of Sales Account"], answer: 0, exp: "Purchase Day Book periodic total is debited to the Purchase Account in General Ledger." },
+            { id: 64, section: 3, text: "The periodic total of the Sales Return Day Book is posted to the General Ledger as:", options: ["(a) Credit to Sales Return Account", "(b) Debit to Sales Return Account", "(c) Debit to Total Trade Creditors Account", "(d) Credit to Purchase Account", "(e) Debit to Cash Account"], answer: 1, exp: "Sales Return total is debited to the Sales Return Account in the General Ledger." },
+            { id: 65, section: 3, text: "Which of the following items is recorded in the Cash Receipts Journal?", options: ["(a) Credit sales to customers", "(b) Goods returned by credit debtors", "(c) Cash sales and cash received from trade debtors", "(d) Credit purchases from suppliers", "(e) Depreciation on motor vehicles"], answer: 2, exp: "All money receipts (cash sales, debtor payments) enter the Cash Receipts Journal." },
+            { id: 66, section: 3, text: "Cash payments made through the bank account to trade creditors are recorded in the:", options: ["(a) Cash Receipts Journal", "(b) Cash Payments Journal", "(c) Purchase Day Book", "(d) General Journal", "(e) Sales Ledger"], answer: 1, exp: "Bank/cash disbursements are entered into the Cash Payments Journal." },
+            { id: 67, section: 3, text: "Trade Discount received from a supplier upon credit purchase is:", options: ["(a) Recorded as an income item in the Cash Receipts Journal.", "(b) Deducted directly on the Purchase Invoice and NOT recorded in any ledger account.", "(c) Debited to Discount Allowed Account.", "(d) Credited to Suspense Account.", "(e) Recorded in the General Journal as an adjustment."], answer: 1, exp: "Trade discounts are deducted on the invoice price and never recorded separately in ledgers." },
+            { id: 68, section: 3, text: "Settlement Cash Discount allowed to a customer for prompt payment is recorded in the:", options: ["(a) Sales Day Book", "(b) Cash Receipts Journal (in the Discount Allowed column)", "(c) Purchase Day Book", "(d) General Journal only", "(e) Petty Cash Book"], answer: 1, exp: "Cash discount allowed is recorded alongside receipts in the Cash Receipts Journal." },
+            { id: 69, section: 3, text: "What is the source document used to record cash deposited into the bank account?", options: ["(a) Cheque leaf", "(b) Bank Pay-in Slip / Deposit Slip", "(c) Payment Voucher", "(d) Purchase Invoice", "(e) Credit Note"], answer: 1, exp: "Bank pay-in slip is the source document for depositing money into the bank." },
+            { id: 70, section: 3, text: "A Journal Voucher is the source document for entries made in the:", options: ["(a) Cash Book", "(b) General Journal", "(c) Purchase Day Book", "(d) Sales Day Book", "(e) Petty Cash Book"], answer: 1, exp: "Journal Vouchers support non-routine adjustments recorded in the General Journal." },
+            { id: 71, section: 3, text: "Which of the following is a Day Book?", options: ["(a) General Ledger", "(b) Debtors Ledger", "(c) Sales Day Book", "(d) Capital Account", "(e) Cash Control Account"], answer: 2, exp: "Sales Day Book is a book of prime entry / day book." },
+            { id: 72, section: 3, text: "The total of the Discount Received column in the Cash Payments Journal is posted to:", options: ["(a) Debit of Discount Received Account in General Ledger", "(b) Credit of Discount Received Account in General Ledger", "(c) Debit of Discount Allowed Account", "(d) Credit of Trade Debtors Control Account", "(e) Debit of Cash Control Account"], answer: 1, exp: "Discount Received is credited to the Discount Received income account in General Ledger." },
+            { id: 73, section: 3, text: "What is the double entry to record the monthly reimbursement of Petty Cash expenses (e.g., postage Rs. 1,200, stationery Rs. 2,500) from the main bank account?", options: ["(a) Debit Petty Cash A/c Rs. 3,700; Credit Bank A/c Rs. 3,700", "(b) Debit Expenses Accounts Rs. 3,700; Credit Bank A/c Rs. 3,700", "(c) Debit Bank A/c Rs. 3,700; Credit Petty Cash A/c Rs. 3,700", "(d) Debit Expenses Accounts Rs. 3,700; Credit Petty Cash A/c Rs. 3,700", "(e) Debit Drawings A/c Rs. 3,700; Credit Cash A/c Rs. 3,700"], answer: 0, exp: "To top up petty cash: Debit Petty Cash A/c and Credit Bank A/c." },
+            { id: 74, section: 3, text: "Withdrawal of cash from the bank for business petty cash float usage is recorded as a:", options: ["(a) Credit Sale", "(b) Contra entry in Cash/Bank records (Debit Petty Cash / Credit Bank)", "(c) Credit Purchase", "(d) Non-Monetary Transaction", "(e) Bad Debt adjustment"], answer: 1, exp: "Transferring funds from main bank to petty cash represents a contra internal transfer." },
+            { id: 75, section: 3, text: "The primary entry book used to record credit transactions involving Bills of Exchange payable to suppliers is:", options: ["(a) Bills Receivable Day Book", "(b) Bills Payable Day Book", "(c) General Journal", "(d) Purchase Return Day Book", "(e) Cash Payments Journal"], answer: 1, exp: "Bills Payable Day Book tracks bills of exchange accepted for suppliers." },
+
+            // Section 4
+            { id: 76, section: 4, text: "Individual customer accounts receiving credit sales are maintained in the:", options: ["(a) Purchase Ledger", "(b) Sales Ledger (Debtors Ledger)", "(c) General Ledger", "(d) Nominal Ledger", "(e) Private Ledger"], answer: 1, exp: "Personal accounts of trade debtors are stored in the Sales Ledger." },
+            { id: 77, section: 4, text: "Individual trade supplier accounts are kept in the:", options: ["(a) Sales Ledger", "(b) Purchase Ledger (Creditors Ledger)", "(c) General Ledger", "(d) Cash Book", "(e) Trial Balance"], answer: 1, exp: "Personal accounts of creditors are stored in the Purchase Ledger." },
+            { id: 78, section: 4, text: "General Ledger contains which types of accounts under the double-entry system?", options: ["(a) Personal accounts of debtors only.", "(b) Nominal accounts (Expenses & Incomes), Real accounts (Assets & Liabilities), and Control Accounts.", "(c) Memorandum notes only.", "(d) Source documents and day books.", "(e) Bank reconciliation statements."], answer: 1, exp: "General Ledger holds nominal, real, and control accounts under double-entry." },
+            { id: 79, section: 4, text: "The fundamental rule of Double-Entry Bookkeeping states:", options: ["(a) Assets must always be greater than Liabilities.", "(b) Every transaction has a Debit entry and a corresponding Credit entry of equal amount.", "(c) Cash payments must equal cash receipts every day.", "(d) Profits must be credited to drawings account.", "(e) Debit all incomes and credit all expenses."], answer: 1, exp: "Double entry dictates every debit entry must have an equal credit entry." },
+            { id: 80, section: 4, text: "Which of the following types of accounts normally carries a DEBIT balance?", options: ["(a) Trade Creditors, Bank Loan, Capital, Rent Received", "(b) Assets, Drawings, Purchases, Expenses, Trade Debtors", "(c) Sales, Discount Received, Capital, Provision for Depreciation", "(d) Accrued Expenses, Bank Overdraft, Capital", "(e) Allowance for Doubtful Debts, Sales Returns, Bank Loan"], answer: 1, exp: "Assets, Drawings, Purchases, Expenses, and Debtors carry normal debit balances." },
+            { id: 81, section: 4, text: "Which of the following types of accounts normally carries a CREDIT balance?", options: ["(a) Purchases, Carriage Inwards, Debtors, Cash", "(b) Capital, Sales, Trade Creditors, Bank Loan, Discount Received", "(c) Equipment, Sales Returns, Drawings, Postage", "(d) Rent Expense, Bank Balance (favorable), Stock", "(e) Electricity, Bad Debts, Carriage Outwards"], answer: 1, exp: "Capital, Sales, Liabilities (Creditors, Loans), and Income carry normal credit balances." },
+            { id: 82, section: 4, text: "What is the double entry to record credit sales of Rs. 25,000 to Mr. Perera?", options: ["(a) Debit Cash A/c Rs. 25,000; Credit Sales A/c Rs. 25,000", "(b) Debit Trade Debtors Control A/c (Mr. Perera) Rs. 25,000; Credit Sales A/c Rs. 25,000", "(c) Debit Sales A/c Rs. 25,000; Credit Trade Debtors Control A/c Rs. 25,000", "(d) Debit Sales A/c Rs. 25,000; Credit Cash A/c Rs. 25,000", "(e) Debit Purchases A/c Rs. 25,000; Credit Mr. Perera A/c Rs. 25,000"], answer: 1, exp: "Credit Sales double entry: Debit Debtors Control / Mr. Perera and Credit Sales." },
+            { id: 83, section: 4, text: "What is the double entry to record the purchase of trading stock for Rs. 50,000 on credit from Nimal Stores?", options: ["(a) Debit Purchases A/c Rs. 50,000; Credit Trade Creditors Control A/c (Nimal Stores) Rs. 50,000", "(b) Debit Trade Creditors Control A/c Rs. 50,000; Credit Purchases A/c Rs. 50,000", "(c) Debit Stock A/c Rs. 50,000; Credit Cash A/c Rs. 50,000", "(d) Debit Purchases A/c Rs. 50,000; Credit Cash A/c Rs. 50,000", "(e) Debit Non-Current Assets A/c Rs. 50,000; Credit Nimal Stores A/c Rs. 50,000"], answer: 0, exp: "Credit Purchase double entry: Debit Purchases A/c and Credit Creditors Control." },
+            { id: 84, section: 4, text: "A Trial Balance is extracted primarily to:", options: ["(a) Guarantee that no bookkeeping errors exist in the books.", "(b) Test the arithmetical accuracy of the double-entry ledger postings at a specific date.", "(c) Calculate the exact tax liability of the firm.", "(d) Replace the Statement of Financial Position.", "(e) Record cash inflows and outflows."], answer: 1, exp: "Trial Balance tests mathematical equality of total debits and credits." },
+            { id: 85, section: 4, text: "Which of the following errors will cause the Trial Balance totals to DISAGREE (out of balance)?", options: ["(a) Complete omission of a transaction from prime entry books.", "(b) Recording a correct transaction twice in both debit and credit.", "(c) Posting a debit entry of Rs. 5,900 to an expense account as Rs. 9,500 while the credit entry is Rs. 5,900.", "(d) Posting a debit to Furniture Account instead of Repairs Account (Error of Principle).", "(e) Compensating errors of equal magnitude on both sides."], answer: 2, exp: "Posting unequal amounts on debit and credit (transposition/posting error) causes Trial Balance mismatch." },
+            { id: 86, section: 4, text: "What is an 'Error of Principle'?", options: ["(a) Transposing figures when copying from day book to ledger.", "(b) Entering a transaction in the wrong class of account (e.g., treating a capital expenditure asset as a revenue expenditure expense).", "(c) Completely forgetting to record a transaction.", "(d) Entering the wrong amount on both debit and credit sides.", "(e) Writing an entry on the wrong side of the same account."], answer: 1, exp: "Error of Principle occurs when fundamental accounting principles are broken (e.g., asset vs expense)." },
+            { id: 87, section: 4, text: "If the Trial Balance totals do not agree, the temporary difference is posted to which account pending investigation?", options: ["(a) Capital Account", "(b) Cash Control Account", "(c) Suspense Account", "(d) Profit and Loss Account", "(e) Drawings Account"], answer: 2, exp: "Unmatched Trial Balance differences are held temporarily in a Suspense Account." },
+            { id: 88, section: 4, text: "Opening balance of Total Trade Debtors Control Account is Rs. 75,000 (Debit). During the month: Credit Sales = Rs. 120,000, Cash collected from Debtors = Rs. 110,000, Sales Returns = Rs. 5,000, Discount Allowed = Rs. 2,000. What is the closing balance of Trade Debtors?", options: ["(a) Rs. 80,000", "(b) Rs. 78,000", "(c) Rs. 195,000", "(d) Rs. 88,000", "(e) Rs. 73,000"], answer: 1, exp: "Closing Debtors = 75,000 (b/d) + 120,000 (Sales) - 110,000 (Cash) - 5,000 (Returns) - 2,000 (Discount) = Rs. 78,000." },
+            { id: 89, section: 4, text: "Opening balance of Total Trade Creditors Control Account is Rs. 80,000 (Credit). During the month: Credit Purchases = Rs. 90,000, Payments to Creditors = Rs. 85,000, Purchase Returns = Rs. 4,000, Discount Received = Rs. 3,000. What is the closing balance of Trade Creditors?", options: ["(a) Rs. 78,000", "(b) Rs. 85,000", "(c) Rs. 170,000", "(d) Rs. 92,000", "(e) Rs. 76,000"], answer: 0, exp: "Closing Creditors = 80,000 (b/d) + 90,000 (Purchases) - 85,000 (Paid) - 4,000 (Returns) - 3,000 (Discount) = Rs. 78,000." },
+            { id: 90, section: 4, text: "Which entry is made in the Total Trade Debtors Control Account to record Bad Debts written off?", options: ["(a) Debit Trade Debtors Control Account", "(b) Credit Trade Debtors Control Account", "(c) Credit Bad Debts Account", "(d) Debit Cash Account", "(e) Credit Sales Account"], answer: 1, exp: "Writing off bad debts reduces trade debtors, so Debtors Control is credited." },
+            { id: 91, section: 4, text: "Discount Received from creditors is posted to the Total Trade Creditors Control Account on the:", options: ["(a) Credit side", "(b) Debit side", "(c) Balance b/d line only", "(d) It is not posted to the control account.", "(e) Profit and Loss credit side only."], answer: 1, exp: "Discount received reduces creditor liability, so it is debited to Trade Creditors Control." },
+            { id: 92, section: 4, text: "What is the effect on the Cash Control Account when the bank debits Bank Charges of Rs. 2,500?", options: ["(a) Debit Cash Control Account by Rs. 2,500", "(b) Credit Cash Control Account by Rs. 2,500", "(c) Debit Capital Account by Rs. 2,500", "(d) Credit Trade Debtors Control Account by Rs. 2,500", "(e) No entry in Cash Control Account."], answer: 1, exp: "Bank charges decrease bank balance, crediting Cash/Bank Control." },
+            { id: 93, section: 4, text: "In a Cash Control Account, a DEBIT balance indicates:", options: ["(a) Bank Overdraft (Liability)", "(b) Favorable Cash/Bank Balance (Asset)", "(c) Net Loss for the period", "(d) Excess of expenses over income", "(e) Capital reduction"], answer: 1, exp: "Debit balance in cash/bank account represents positive cash asset." },
+            { id: 94, section: 4, text: "In a Cash Control Account, a CREDIT balance indicates:", options: ["(a) Favorable Cash at Bank", "(b) Bank Overdraft (Current Liability)", "(c) Total Trade Debtors collection", "(d) Gross Profit", "(e) Equity addition"], answer: 1, exp: "Credit balance in cash control signifies bank overdraft." },
+            { id: 95, section: 4, text: "Direct bank deposit made by a customer into the firm's bank account requires which entry in the Cash Control Account?", options: ["(a) Credit side entry (Payment)", "(b) Debit side entry (Receipt)", "(c) Suspense Account debit", "(d) Drawings debit", "(e) No entry until year-end."], answer: 1, exp: "Direct customer deposit increases cash/bank balance, requiring a debit entry." },
+            { id: 96, section: 4, text: "What is the double entry for proprietor withdrawing Rs. 10,000 cash from the bank for personal family use?", options: ["(a) Debit Drawings A/c Rs. 10,000; Credit Cash/Bank Control A/c Rs. 10,000", "(b) Debit Salaries A/c Rs. 10,000; Credit Bank A/c Rs. 10,000", "(c) Debit Cash A/c Rs. 10,000; Credit Capital A/c Rs. 10,000", "(d) Debit Capital A/c Rs. 10,000; Credit Drawings A/c Rs. 10,000", "(e) Debit Operating Expenses A/c Rs. 10,000; Credit Bank A/c Rs. 10,000"], answer: 0, exp: "Personal drawings: Debit Drawings A/c and Credit Cash/Bank A/c." },
+            { id: 97, section: 4, text: "Carriage Inwards paid on purchase of goods for trading is posted to the Trial Balance as a:", options: ["(a) Credit balance under Liabilities", "(b) Debit balance under Direct Expenses / Cost of Sales", "(c) Credit balance under Income", "(d) Deduction from Capital", "(e) Non-Current Asset"], answer: 1, exp: "Carriage Inwards is a direct expense carrying a debit balance." },
+            { id: 98, section: 4, text: "Return of goods by a customer (Sales Returns) is recorded in the General Ledger by:", options: ["(a) Debiting Sales Return Account & Crediting Debtors Control Account", "(b) Crediting Sales Return Account & Debiting Debtors Control Account", "(c) Debiting Purchases Account & Crediting Creditors Control Account", "(d) Debiting Cash Account & Crediting Sales Return Account", "(e) Crediting Profit and Loss Account"], answer: 0, exp: "Sales Returns: Debit Sales Return Account and Credit Debtors Control Account." },
+            { id: 99, section: 4, text: "How is an Allowance for Doubtful Debts presented in the Statement of Financial Position?", options: ["(a) As a Current Liability", "(b) As a deduction from Total Trade Debtors under Current Assets", "(c) As an addition to Non-Current Assets", "(d) Under Owner's Equity", "(e) As a Non-Current Liability"], answer: 1, exp: "Doubtful debt provisions are shown as a contra-asset deduction from trade debtors." },
+            { id: 100, section: 4, text: "If the total debits of a Trial Balance exceed total credits by Rs. 5,000, where and how is the Suspense Account initially recorded?", options: ["(a) Debit side of Suspense Account with Rs. 5,000", "(b) Credit side of Suspense Account with Rs. 5,000", "(c) Debited to Capital Account with Rs. 5,000", "(d) Credited to Sales Account with Rs. 5,000", "(e) Debited to Bank Account with Rs. 5,000"], answer: 1, exp: "When debits exceed credits by 5,000, a credit balance of 5,000 is placed in the Suspense Account to balance the Trial Balance." }
+        ];
+
+        // STATE VARIABLES
+        let currentQuestions = [...questionsData];
+        let currentIndex = 0;
+        let userAnswers = {}; // { qId: selectedOptionIndex }
+        let bookmarkedQ = new Set();
+        let mode = 'practice'; // 'practice' or 'test'
+        let timerInterval = null;
+        let timeRemaining = 3600; // 60 mins
+
+        // DOM ELEMENTS
+        const modePracticeBtn = document.getElementById('modePractice');
+        const modeTestBtn = document.getElementById('modeTest');
+        const searchInput = document.getElementById('searchInput');
+        const questionGrid = document.getElementById('questionGrid');
+        const filteredCount = document.getElementById('filteredCount');
+        const scoreText = document.getElementById('scoreText');
+        const accuracyText = document.getElementById('accuracyText');
+        const progressBar = document.getElementById('progressBar');
+        const progressPercent = document.getElementById('progressPercent');
+        const bookmarkBadge = document.getElementById('bookmarkBadge');
+
+        const questionCard = document.getElementById('questionCard');
+        const qSectionTag = document.getElementById('qSectionTag');
+        const qNumberTag = document.getElementById('qNumberTag');
+        const bookmarkBtn = document.getElementById('bookmarkBtn');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const explanationBox = document.getElementById('explanationBox');
+        const explanationText = document.getElementById('explanationText');
+
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitTestBtn = document.getElementById('submitTestBtn');
+
+        const timerContainer = document.getElementById('timerContainer');
+        const timerDisplay = document.getElementById('timerDisplay');
+        const testSummaryCard = document.getElementById('testSummaryCard');
+
+        // INITIALIZATION
+        window.addEventListener('DOMContentLoaded', () => {
+            initEvents();
+            renderQuestion();
+            updateStats();
+            buildQuestionGrid();
+        });
+
+        function initEvents() {
+            // Dark Mode Toggle
+            document.getElementById('themeToggleBtn').addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                const isDark = document.documentElement.classList.contains('dark');
+                document.getElementById('themeIcon').className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            });
+
+            // Mode Toggle
+            modePracticeBtn.addEventListener('click', () => setMode('practice'));
+            modeTestBtn.addEventListener('click', () => setMode('test'));
+
+            // Section Filter
+            document.querySelectorAll('.sec-filter').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.sec-filter').forEach(b => {
+                        b.classList.remove('bg-brand-50', 'dark:bg-brand-900/30', 'text-brand-600', 'dark:text-brand-400', 'font-semibold');
+                        b.classList.add('hover:bg-slate-100', 'dark:hover:bg-slate-700', 'text-slate-600', 'dark:text-slate-300');
+                    });
+                    const target = e.currentTarget;
+                    target.classList.add('bg-brand-50', 'dark:bg-brand-900/30', 'text-brand-600', 'dark:text-brand-400', 'font-semibold');
+
+                    filterQuestions(target.dataset.section);
+                });
+            });
+
+            // Search Filter
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                currentQuestions = questionsData.filter(q => q.text.toLowerCase().includes(query));
+                currentIndex = 0;
+                renderQuestion();
+                buildQuestionGrid();
+                filteredCount.textContent = `${currentQuestions.length} Questions`;
+            });
+
+            // Navigation
+            prevBtn.addEventListener('click', () => {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    renderQuestion();
+                }
+            });
+
+            nextBtn.addEventListener('click', () => {
+                if (currentIndex < currentQuestions.length - 1) {
+                    currentIndex++;
+                    renderQuestion();
+                }
+            });
+
+            // Bookmark Toggle
+            bookmarkBtn.addEventListener('click', () => {
+                const currentQ = currentQuestions[currentIndex];
+                if (!currentQ) return;
+                if (bookmarkedQ.has(currentQ.id)) {
+                    bookmarkedQ.delete(currentQ.id);
+                } else {
+                    bookmarkedQ.add(currentQ.id);
+                }
+                updateBookmarkState();
+            });
+
+            // Reset Quiz
+            document.getElementById('resetBtn').addEventListener('click', () => {
+                if (confirm('Are you sure you want to reset all progress and answers?')) {
+                    userAnswers = {};
+                    currentIndex = 0;
+                    if (mode === 'test') stopTimer();
+                    setMode('practice');
+                    renderQuestion();
+                    updateStats();
+                    buildQuestionGrid();
+                }
+            });
+
+            // Test Submit & Actions
+            submitTestBtn.addEventListener('click', finishTest);
+            document.getElementById('retakeTestBtn').addEventListener('click', () => {
+                userAnswers = {};
+                testSummaryCard.classList.add('hidden');
+                questionCard.classList.remove('hidden');
+                setMode('test');
+            });
+            document.getElementById('reviewTestBtn').addEventListener('click', () => {
+                testSummaryCard.classList.add('hidden');
+                questionCard.classList.remove('hidden');
+                setMode('practice');
+            });
+        }
+
+        function setMode(newMode) {
+            mode = newMode;
+            if (mode === 'practice') {
+                modePracticeBtn.className = "py-2 text-xs font-semibold rounded-md transition shadow bg-white dark:bg-slate-800 text-brand-600 dark:text-brand-400";
+                modeTestBtn.className = "py-2 text-xs font-semibold rounded-md transition text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100";
+                timerContainer.classList.add('hidden');
+                submitTestBtn.classList.add('hidden');
+                stopTimer();
+            } else {
+                modeTestBtn.className = "py-2 text-xs font-semibold rounded-md transition shadow bg-white dark:bg-slate-800 text-brand-600 dark:text-brand-400";
+                modePracticeBtn.className = "py-2 text-xs font-semibold rounded-md transition text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100";
+                timerContainer.classList.remove('hidden');
+                submitTestBtn.classList.remove('hidden');
+                startTimer();
+            }
+            renderQuestion();
+        }
+
+        function filterQuestions(secKey) {
+            if (secKey === 'all') {
+                currentQuestions = [...questionsData];
+            } else if (secKey === 'bookmarked') {
+                currentQuestions = questionsData.filter(q => bookmarkedQ.has(q.id));
+            } else {
+                const s = parseInt(secKey);
+                currentQuestions = questionsData.filter(q => q.section === s);
+            }
+            currentIndex = 0;
+            filteredCount.textContent = `${currentQuestions.length} Questions`;
+            renderQuestion();
+            buildQuestionGrid();
+        }
+
+        function renderQuestion() {
+            if (currentQuestions.length === 0) {
+                questionText.textContent = "No questions found for this filter or bookmark selection.";
+                optionsContainer.innerHTML = "";
+                explanationBox.classList.add('hidden');
+                return;
+            }
+
+            const q = currentQuestions[currentIndex];
+            qSectionTag.textContent = `Section ${q.section}`;
+            qNumberTag.textContent = `Question ${currentIndex + 1} of ${currentQuestions.length}`;
+            questionText.textContent = `${q.id}. ${q.text}`;
+
+            updateBookmarkState();
+
+            // Render Options
+            optionsContainer.innerHTML = "";
+            const answeredOption = userAnswers[q.id];
+
+            q.options.forEach((optText, optIdx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-3.5 rounded-xl border transition-all text-xs sm:text-sm flex items-start space-x-3 ";
+
+                if (answeredOption !== undefined) {
+                    if (mode === 'practice') {
+                        if (optIdx === q.answer) {
+                            btn.classList.add('bg-emerald-50', 'dark:bg-emerald-950/40', 'border-emerald-500', 'text-emerald-800', 'dark:text-emerald-300', 'font-semibold');
+                        } else if (optIdx === answeredOption) {
+                            btn.classList.add('bg-rose-50', 'dark:bg-rose-950/40', 'border-rose-500', 'text-rose-800', 'dark:text-rose-300');
+                        } else {
+                            btn.classList.add('bg-white', 'dark:bg-slate-800', 'border-slate-200', 'dark:border-slate-700', 'opacity-60');
+                        }
+                    } else { // Test mode
+                        if (optIdx === answeredOption) {
+                            btn.classList.add('bg-brand-50', 'dark:bg-brand-950/50', 'border-brand-500', 'text-brand-800', 'dark:text-brand-200', 'font-semibold');
+                        } else {
+                            btn.classList.add('bg-white', 'dark:bg-slate-800', 'border-slate-200', 'dark:border-slate-700');
+                        }
+                    }
+                } else {
+                    btn.classList.add('bg-white', 'dark:bg-slate-800', 'border-slate-200', 'dark:border-slate-700', 'hover:border-brand-400', 'hover:bg-slate-50', 'dark:hover:bg-slate-700/50');
+                }
+
+                btn.innerHTML = `
+                    <span class="w-5 h-5 rounded-full border flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold">
+                        ${String.fromCharCode(65 + optIdx)}
+                    </span>
+                    <span class="leading-relaxed">${optText}</span>
+                `;
+
+                btn.addEventListener('click', () => selectAnswer(q.id, optIdx));
+                optionsContainer.appendChild(btn);
+            });
+
+            // Practice Mode Explanation
+            if (mode === 'practice' && answeredOption !== undefined) {
+                explanationBox.classList.remove('hidden');
+                explanationText.textContent = q.exp;
+            } else {
+                explanationBox.classList.add('hidden');
+            }
+
+            // Prev/Next buttons state
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex === currentQuestions.length - 1;
+
+            updateQuestionGridHighlight();
+        }
+
+        function selectAnswer(qId, optIdx) {
+            userAnswers[qId] = optIdx;
+            renderQuestion();
+            updateStats();
+            buildQuestionGrid();
+        }
+
+        function updateBookmarkState() {
+            const currentQ = currentQuestions[currentIndex];
+            if (!currentQ) return;
+            if (bookmarkedQ.has(currentQ.id)) {
+                bookmarkBtn.innerHTML = '<i class="fa-solid fa-star text-amber-500"></i>';
+            } else {
+                bookmarkBtn.innerHTML = '<i class="fa-regular fa-star text-slate-400"></i>';
+            }
+            bookmarkBadge.textContent = bookmarkedQ.size;
+        }
+
+        function updateStats() {
+            const totalAnswered = Object.keys(userAnswers).length;
+            let correctCount = 0;
+
+            Object.keys(userAnswers).forEach(qId => {
+                const question = questionsData.find(q => q.id == qId);
+                if (question && userAnswers[qId] === question.answer) {
+                    correctCount++;
+                }
+            });
+
+            scoreText.textContent = correctCount;
+            const accuracy = totalAnswered > 0 ? Math.round((correctCount / totalAnswered) * 100) : 0;
+            accuracyText.textContent = `${accuracy}%`;
+
+            const percent = Math.round((totalAnswered / questionsData.length) * 100);
+            progressBar.style.width = `${percent}%`;
+            progressPercent.textContent = `${percent}%`;
+        }
+
+        function buildQuestionGrid() {
+            questionGrid.innerHTML = "";
+            currentQuestions.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full aspect-square rounded-lg text-xs font-semibold flex items-center justify-center transition ";
+
+                const isAnswered = userAnswers[q.id] !== undefined;
+                const isCurrent = idx === currentIndex;
+
+                if (isCurrent) {
+                    btn.classList.add('ring-2', 'ring-brand-500', 'ring-offset-1');
+                }
+
+                if (isAnswered) {
+                    if (mode === 'practice') {
+                        const isCorrect = userAnswers[q.id] === q.answer;
+                        btn.classList.add(isCorrect ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white');
+                    } else {
+                        btn.classList.add('bg-brand-500', 'text-white');
+                    }
+                } else {
+                    btn.classList.add('bg-slate-100', 'dark:bg-slate-700', 'text-slate-600', 'dark:text-slate-300');
+                }
+
+                btn.textContent = q.id;
+                btn.addEventListener('click', () => {
+                    currentIndex = idx;
+                    renderQuestion();
+                });
+                questionGrid.appendChild(btn);
+            });
+        }
+
+        function updateQuestionGridHighlight() {
+            const buttons = questionGrid.children;
+            for (let i = 0; i < buttons.length; i++) {
+                if (i === currentIndex) {
+                    buttons[i].classList.add('ring-2', 'ring-brand-500', 'ring-offset-1');
+                } else {
+                    buttons[i].classList.remove('ring-2', 'ring-brand-500', 'ring-offset-1');
+                }
+            }
+        }
+
+        // TIMER FUNCTIONS
+        function startTimer() {
+            stopTimer();
+            timeRemaining = 3600;
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                const mins = Math.floor(timeRemaining / 60);
+                const secs = timeRemaining % 60;
+                timerDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+                if (timeRemaining <= 0) {
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+        }
+
+        function finishTest() {
+            stopTimer();
+            questionCard.classList.add('hidden');
+            testSummaryCard.classList.remove('hidden');
+
+            let correctCount = 0;
+            Object.keys(userAnswers).forEach(qId => {
+                const question = questionsData.find(q => q.id == qId);
+                if (question && userAnswers[qId] === question.answer) {
+                    correctCount++;
+                }
+            });
+
+            document.getElementById('finalScore').textContent = `${correctCount}/100`;
+            const accuracy = Math.round((correctCount / questionsData.length) * 100);
+            document.getElementById('finalAccuracy').textContent = `${accuracy}%`;
+
+            const timeSpentSecs = 3600 - timeRemaining;
+            const mins = Math.floor(timeSpentSecs / 60);
+            const secs = timeSpentSecs % 60;
+            document.getElementById('finalTime').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+    </script>
+</body>
+</html>
